@@ -24,6 +24,7 @@ enum Image {
     struct Document: Decodable {
         let thumbnail: String
     }
+    
 }
 
 

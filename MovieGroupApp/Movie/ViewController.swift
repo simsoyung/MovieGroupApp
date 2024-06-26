@@ -71,13 +71,7 @@ class ViewController: BaseViewController {
 
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if tableView.tag == 0 {
-            return kakao[0].count
-        } else if tableView.tag == 1 {
-            return movie[0].count
-        } else {
-            return movie[1].count
-        }
+        return movie.count + kakao.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
