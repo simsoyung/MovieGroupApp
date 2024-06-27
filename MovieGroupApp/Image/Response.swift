@@ -11,42 +11,29 @@ import Alamofire
 class ResponseAPI {
     static let shared = ResponseAPI()
     private init() {}
-    func responseMovie(completionHandler: @escaping ([Image.Result]) -> Void ){
-        let url = "\(API.APIURL.TMDBlanguageURL)"
-        let parameter = ["query": "액션"]
-        let header: HTTPHeaders = ["Authorization": "\(API.APIKey.TMDBKey)"]
-        AF.request(url, parameters: parameter ,headers: header).responseDecodable(of: Image.Movie.self) { response in
+    
+    typealias CompletionHandlerMovie = ([Image.Result]?, String?) -> Void
+    typealias CompletionHandlerBook = ([Image.Document]?, String?) -> Void
+    
+    
+    func responseMovie(api: ImageRequest,completionHandler: @escaping CompletionHandlerMovie ){
+        AF.request(api.endpoint,method: api.method, parameters: api.parameter, encoding: URLEncoding(destination: .queryString) ,headers: api.movieHeader).responseDecodable(of: Image.Movie.self) { response in
             switch response.result {
             case .success(let value):
-                completionHandler(value.results)
+                completionHandler(value.results, nil)
             case .failure(let error):
-                print(error)
-            }
-        }
-    }
-    func responseMovieIdNum(completionHandler: @escaping ([Image.Result]) -> Void ){
-        let url = "https://api.themoviedb.org/3/movie/777/recommendations"
-        let header: HTTPHeaders = ["Authorization": "\(API.APIKey.TMDBKey)"]
-        AF.request(url, headers: header).responseDecodable(of: Image.Movie.self) { response in
-            switch response.result {
-            case .success(let value):
-                completionHandler(value.results)
-            case .failure(let error):
-                print(error)
+                completionHandler(nil, "검색어를 다시 입력해주세요")
             }
         }
     }
     
-    func responseBook(completionHandler: @escaping ([Image.Document]) -> Void ){
-        let url = "\(API.APIURL.kakaoBookURL)"
-        let header: HTTPHeaders = ["Authorization": "\(API.APIKey.kakaoBookKey)"]
-        let parameter = ["query": "영화"]
-        AF.request(url,parameters: parameter, headers: header).responseDecodable(of: Image.Book.self) { response in
+    func responseBook(api: ImageRequest ,completionHandler: @escaping CompletionHandlerBook ){
+        AF.request(api.endpoint, method: api.method, parameters: api.parameter,encoding: URLEncoding(destination: .queryString) , headers: api.bookHeader).responseDecodable(of: Image.Book.self) { response in
             switch response.result {
             case .success(let value):
-                completionHandler(value.documents)
+                completionHandler(value.documents, nil)
             case .failure(let error):
-                print(error)
+                completionHandler(nil, "검색어를 다시 입력해주세요")
             }
         }
     }

@@ -9,7 +9,11 @@ import UIKit
 
 class ViewController: BaseViewController {
     
+    var nameList = ["추천도서", "추천영화", "추천드라마","비슷한 영화", "비슷한 드라마"]
+    
     var movie: [[Image.Result]] = [
+        [Image.Result(poster_path: "")],
+        [Image.Result(poster_path: "")],
         [Image.Result(poster_path: "")],
         [Image.Result(poster_path: "")]
     ]
@@ -17,11 +21,11 @@ class ViewController: BaseViewController {
     
     
     lazy var tableView = {
-        let view = UITableView()
+        let view = UITableView(frame: .zero, style: .grouped)
         view.delegate = self
         view.dataSource = self
         view.register(MovieTableViewCell.self, forCellReuseIdentifier: MovieTableViewCell.id)
-        view.rowHeight = 150
+        view.rowHeight = 200
         return view
     }()
 
@@ -31,30 +35,67 @@ class ViewController: BaseViewController {
         
         group.enter()
         DispatchQueue.global().async {
-            ResponseAPI.shared.responseMovie { data in
-                self.movie[0] = data
+            ResponseAPI.shared.responseMovie(api: .movieImage(media: "movie", language: "ko-KR")) { data, error in
+                if error != nil {
+                    print("1에러남")
+                } else {
+                    guard let movie = data else {return}
+                    self.movie[0] = movie
+                }
                 group.leave()
             }
         }
         group.enter()
         DispatchQueue.global().async {
-            ResponseAPI.shared.responseMovieIdNum { data in
-                self.movie[1] = data
+            ResponseAPI.shared.responseMovie(api: .tvImage(media: "tv", language: "ko-KR")) { data, error in
+                if error != nil {
+                    print("2에러남")
+                } else {
+                    guard let tv = data else {return}
+                    self.movie[1] = tv
+                }
                 group.leave()
             }
         }
         group.enter()
         DispatchQueue.global().async {
-            ResponseAPI.shared.responseBook { data in
-                self.kakao[0] = data
+            ResponseAPI.shared.responseMovie(api: .movieNum(query: "2")) { data, error in
+                if error != nil {
+                    print("3에러남")
+                } else {
+                    guard let num = data else {return}
+                    self.movie[2] = num
+                }
+                group.leave()
+            }
+        }
+        group.enter()
+        DispatchQueue.global().async {
+            ResponseAPI.shared.responseMovie(api: .tvNum(query: "1")) { data, error in
+                if error != nil {
+                    print("4에러남")
+                } else {
+                    guard let num = data else {return}
+                    self.movie[3] = num
+                }
+                group.leave()
+            }
+        }
+        group.enter()
+        DispatchQueue.global().async {
+            ResponseAPI.shared.responseBook(api: .bookImage(query: "시리즈")) { data, error in
+                if error != nil {
+                    print("5에러남")
+                } else {
+                    guard let book = data else {return}
+                    self.kakao[0] = book
+                }
                 group.leave()
             }
         }
         group.notify(queue: .main) {
             self.tableView.reloadData()
         }
-        
-        
     }
     override func configureUI() {
         super.configureUI()
@@ -70,10 +111,12 @@ class ViewController: BaseViewController {
 }
 
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return movie.count + kakao.count
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return nameList[section]
     }
-    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return kakao.count + movie.count
+    }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: MovieTableViewCell.id, for: indexPath) as! MovieTableViewCell
         cell.collectionView.tag = indexPath.row
@@ -88,11 +131,15 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
 extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView.tag == 0 {
-            return kakao[0].count
+            kakao[collectionView.tag].count
         } else if collectionView.tag == 1 {
-            return movie[0].count
+            movie[0].count
+        } else if collectionView.tag == 2 {
+            movie[1].count
+        } else if collectionView.tag == 3 {
+            movie[2].count
         } else {
-            return movie[1].count
+            movie[3].count
         }
     }
     
@@ -100,21 +147,30 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieCollectionViewCell.id, for: indexPath) as! MovieCollectionViewCell
         if collectionView.tag == 0 {
             let data = kakao[collectionView.tag]
-            let urlImage = "\(data[indexPath.item].thumbnail)"
-            let url = URL(string: urlImage)
+            let ImageBook = "\(data[indexPath.item].thumbnail)"
+            let url = URL(string: ImageBook)
             cell.imageView.kf.setImage(with: url)
         } else if collectionView.tag == 1 {
             let data = movie[0]
             let urlImage = "https://image.tmdb.org/t/p/w500\(data[indexPath.item].poster_path)"
             let url = URL(string: urlImage)
             cell.imageView.kf.setImage(with: url)
-        } else {
+        } else if collectionView.tag == 2 {
             let data = movie[1]
             let urlImage = "https://image.tmdb.org/t/p/w500\(data[indexPath.item].poster_path)"
             let url = URL(string: urlImage)
             cell.imageView.kf.setImage(with: url)
+        } else if collectionView.tag == 3 {
+            let data = movie[2]
+            let urlImage = "https://image.tmdb.org/t/p/w500\(data[indexPath.item].poster_path)"
+            let url = URL(string: urlImage)
+            cell.imageView.kf.setImage(with: url)
+        } else {
+            let data = movie[3]
+            let urlImage = "https://image.tmdb.org/t/p/w500\(data[indexPath.item].poster_path)"
+            let url = URL(string: urlImage)
+            cell.imageView.kf.setImage(with: url)
         }
-        
         return cell
     }
     
