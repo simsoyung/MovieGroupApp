@@ -25,7 +25,6 @@
 		46BD5E9F2C2AB56300BF58C4 /* MovieCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46BD5E9E2C2AB56300BF58C4 /* MovieCollectionViewCell.swift */; };
 		46BD5EA12C2ABD1C00BF58C4 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46BD5EA02C2ABD1B00BF58C4 /* Response.swift */; };
 		46BD5EA72C2C1E4500BF58C4 /* ImageRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46BD5EA62C2C1E4500BF58C4 /* ImageRequest.swift */; };
-		46BD5EA92C2CDA7000BF58C4 /* MovieTableHeaderViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46BD5EA82C2CDA7000BF58C4 /* MovieTableHeaderViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,7 +45,6 @@
 		46BD5E9E2C2AB56300BF58C4 /* MovieCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCollectionViewCell.swift; sourceTree = "<group>"; };
 		46BD5EA02C2ABD1B00BF58C4 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
 		46BD5EA62C2C1E4500BF58C4 /* ImageRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageRequest.swift; sourceTree = "<group>"; };
-		46BD5EA82C2CDA7000BF58C4 /* MovieTableHeaderViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieTableHeaderViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,7 +100,6 @@
 				46BD5E742C2AAB6B00BF58C4 /* ViewController.swift */,
 				46BD5E9C2C2AB4D400BF58C4 /* MovieTableViewCell.swift */,
 				46BD5E9E2C2AB56300BF58C4 /* MovieCollectionViewCell.swift */,
-				46BD5EA82C2CDA7000BF58C4 /* MovieTableHeaderViewCell.swift */,
 			);
 			path = Movie;
 			sourceTree = "<group>";
@@ -216,7 +213,6 @@
 				46BD5E892C2AAC7400BF58C4 /* API.swift in Sources */,
 				46BD5E732C2AAB6B00BF58C4 /* SceneDelegate.swift in Sources */,
 				46BD5E902C2AB24300BF58C4 /* BaseTableViewCell.swift in Sources */,
-				46BD5EA92C2CDA7000BF58C4 /* MovieTableHeaderViewCell.swift in Sources */,
 				46BD5EA12C2ABD1C00BF58C4 /* Response.swift in Sources */,
 				46BD5E9F2C2AB56300BF58C4 /* MovieCollectionViewCell.swift in Sources */,
 				46BD5E8B2C2AACC300BF58C4 /* Image.swift in Sources */,

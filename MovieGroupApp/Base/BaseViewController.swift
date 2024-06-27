@@ -12,8 +12,6 @@ import Kingfisher
 
 class BaseViewController: UIViewController {
     
-    
-
     override func viewDidLoad() {
         super.viewDidLoad()
         configureHierarchy()
@@ -25,6 +23,7 @@ class BaseViewController: UIViewController {
     func configureLayout(){}
     func configureUI(){
         view.backgroundColor = .black
+        
     }
     
 }

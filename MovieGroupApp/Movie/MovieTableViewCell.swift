@@ -31,7 +31,7 @@ class MovieTableViewCell: BaseTableViewCell {
     
     override func configureLayout() {
         titleLabel.snp.makeConstraints { make in
-            make.top.horizontalEdges.equalTo(contentView).inset(30)
+            make.top.horizontalEdges.equalTo(contentView).inset(10)
             make.height.equalTo(30)
         }
         collectionView.snp.makeConstraints { make in
@@ -42,6 +42,8 @@ class MovieTableViewCell: BaseTableViewCell {
     override func configureHierarchy() {
         contentView.addSubview(titleLabel)
         contentView.addSubview(collectionView)
+        collectionView.backgroundColor = .black
+        contentView.backgroundColor = .black
     }
 
 }

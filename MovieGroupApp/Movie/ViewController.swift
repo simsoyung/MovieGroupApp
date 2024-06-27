@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class ViewController: BaseViewController {
     
@@ -18,7 +19,6 @@ class ViewController: BaseViewController {
         [Image.Result(poster_path: "")]
     ]
     var kakao: [[Image.Document]] = [[Image.Document(thumbnail: "")]]
-    
     
     lazy var tableView = {
         let view = UITableView(frame: .zero, style: .grouped)
@@ -59,7 +59,7 @@ class ViewController: BaseViewController {
         }
         group.enter()
         DispatchQueue.global().async {
-            ResponseAPI.shared.responseMovie(api: .movieNum(query: "2")) { data, error in
+            ResponseAPI.shared.responseMovie(api: .movieNum(query: "777")) { data, error in
                 if error != nil {
                     print("3에러남")
                 } else {
@@ -99,6 +99,10 @@ class ViewController: BaseViewController {
     }
     override func configureUI() {
         super.configureUI()
+        tableView.backgroundColor = .black
+        tableView.sectionIndexBackgroundColor = .black
+        navigationController?.navigationBar.backgroundColor = .black
+        navigationController?.navigationBar.isTranslucent = false
     }
     override func configureLayout() {
         tableView.snp.makeConstraints { make in
@@ -111,9 +115,7 @@ class ViewController: BaseViewController {
 }
 
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return nameList[section]
-    }
+        
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return kakao.count + movie.count
     }
@@ -124,6 +126,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         cell.collectionView.delegate = self
         cell.collectionView.register(MovieCollectionViewCell.self, forCellWithReuseIdentifier: MovieCollectionViewCell.id)
         cell.collectionView.reloadData()
+        cell.titleLabel.text = nameList[indexPath.row]
         return cell
     }
 }
