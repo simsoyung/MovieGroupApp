@@ -25,6 +25,7 @@
 		46BD5E9F2C2AB56300BF58C4 /* MovieCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46BD5E9E2C2AB56300BF58C4 /* MovieCollectionViewCell.swift */; };
 		46BD5EA12C2ABD1C00BF58C4 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46BD5EA02C2ABD1B00BF58C4 /* Response.swift */; };
 		46BD5EA72C2C1E4500BF58C4 /* ImageRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46BD5EA62C2C1E4500BF58C4 /* ImageRequest.swift */; };
+		46BD5EAE2C2DA8A400BF58C4 /* XMLCoder in Frameworks */ = {isa = PBXBuildFile; productRef = 46BD5EAD2C2DA8A400BF58C4 /* XMLCoder */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +55,7 @@
 			files = (
 				46BD5E9B2C2AB48100BF58C4 /* SnapKit in Frameworks */,
 				46BD5E952C2AB46600BF58C4 /* Kingfisher in Frameworks */,
+				46BD5EAE2C2DA8A400BF58C4 /* XMLCoder in Frameworks */,
 				46BD5E982C2AB47300BF58C4 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -144,6 +146,7 @@
 				46BD5E942C2AB46600BF58C4 /* Kingfisher */,
 				46BD5E972C2AB47300BF58C4 /* Alamofire */,
 				46BD5E9A2C2AB48100BF58C4 /* SnapKit */,
+				46BD5EAD2C2DA8A400BF58C4 /* XMLCoder */,
 			);
 			productName = MovieGroupApp;
 			productReference = 46BD5E6D2C2AAB6B00BF58C4 /* MovieGroupApp.app */;
@@ -177,6 +180,7 @@
 				46BD5E932C2AB46600BF58C4 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				46BD5E962C2AB47300BF58C4 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				46BD5E992C2AB48100BF58C4 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				46BD5EAC2C2DA8A300BF58C4 /* XCRemoteSwiftPackageReference "XMLCoder" */,
 			);
 			productRefGroup = 46BD5E6E2C2AAB6B00BF58C4 /* Products */;
 			projectDirPath = "";
@@ -463,6 +467,14 @@
 				minimumVersion = 5.7.1;
 			};
 		};
+		46BD5EAC2C2DA8A300BF58C4 /* XCRemoteSwiftPackageReference "XMLCoder" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/CoreOffice/XMLCoder";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.17.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -480,6 +492,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 46BD5E992C2AB48100BF58C4 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
+		};
+		46BD5EAD2C2DA8A400BF58C4 /* XMLCoder */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 46BD5EAC2C2DA8A300BF58C4 /* XCRemoteSwiftPackageReference "XMLCoder" */;
+			productName = XMLCoder;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -7,13 +7,14 @@
 
 import Foundation
 import Alamofire
+import XMLCoder
 
 enum ImageRequest {
     case tvImage(media: String, language: String)
     case movieImage(media: String, language: String)
-    case movieNum(query: String)
+    case movieNum(query: String, language: String)
     case bookImage(query: String)
-    case tvNum(query: String)
+    case tvNum(query: String,language: String)
     
     var baseMovieURL: String {
         return "https://api.themoviedb.org/3/"
@@ -25,19 +26,14 @@ enum ImageRequest {
             return URL(string: baseMovieURL + "trending/\(media)/day?language=")!
         case .movieImage(let media, _) :
             return URL(string: baseMovieURL + "trending/\(media)/day?language=")!
-        case .movieNum(let query):
-            return URL(string: baseMovieURL + "movie/\(query)/recommendations")!
+        case .movieNum(let query ,_):
+            return URL(string: baseMovieURL + "movie/\(query)/recommendations?language=")!
         case .bookImage:
             return URL(string: API.APIURL.kakaoBookURL)!
-        case .tvNum(let query):
-            return URL(string: baseMovieURL + "tv/\(query)/recommendations")!
+        case .tvNum(let query, _):
+            return URL(string: baseMovieURL + "tv/\(query)/recommendations?language=")!
         }
-    }
-    var movieHeader: HTTPHeaders {
-        return ["Authorization": "\(API.APIKey.TMDBKey)"]
-    }
-    var bookHeader: HTTPHeaders {
-        return ["Authorization": "\(API.APIKey.kakaoBookKey)"]
+    
     }
     var method: HTTPMethod {
         return .get
@@ -48,13 +44,26 @@ enum ImageRequest {
             return ["language": language ]
         case .movieImage(_, let language):
             return ["language": language ]
-        case .movieNum(let query):
-            return ["query": query]
+        case .movieNum(let query, let language ):
+            return ["query": query, "language": language]
         case .bookImage(let query):
             return ["query": query]
-        case .tvNum(let query):
-            return ["": ""]
+        case .tvNum(_, let language):
+            return ["language": language]
         }
     }
     
+}
+
+enum HeaderAPI {
+    case movie
+    case book
+    var headerKey: HTTPHeaders {
+        switch self {
+        case .movie:
+            return ["Authorization": "\(API.APIKey.TMDBKey)"]
+        case .book:
+            return ["Authorization": "\(API.APIKey.kakaoBookKey)"]
+        }
+    }
 }
