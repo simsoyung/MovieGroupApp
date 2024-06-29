@@ -7,20 +7,20 @@
 
 import UIKit
 import SnapKit
-import XMLCoder
+import Alamofire
 
 class ViewController: BaseViewController, XMLParserDelegate {
     
     var nameList = ["추천도서", "추천영화", "추천드라마","비슷한 영화", "비슷한 드라마"]
     let searchBar = UISearchBar()
     var movie: [[Image.Result]] = [
-        [Image.Result(poster_path: "", id: 0)],
-        [Image.Result(poster_path: "", id: 0)],
-        [Image.Result(poster_path: "", id: 0)],
-        [Image.Result(poster_path: "", id: 0)],
+        [Image.Result(poster_path: "", id: 0, overview: "", backdrop_path: "")],
+        [Image.Result(poster_path: "", id: 0, overview: "", backdrop_path: "")],
+        [Image.Result(poster_path: "", id: 0, overview: "", backdrop_path: "")],
+        [Image.Result(poster_path: "", id: 0, overview: "", backdrop_path: "")],
     ]
     var kakao: [[Image.Document]] = [[Image.Document(thumbnail: "")]]
-
+    
     lazy var tableView = {
         let view = UITableView(frame: .zero, style: .grouped)
         view.delegate = self
@@ -29,7 +29,11 @@ class ViewController: BaseViewController, XMLParserDelegate {
         view.rowHeight = 200
         return view
     }()
-
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         callRequest(text: "소설")
@@ -61,15 +65,7 @@ class ViewController: BaseViewController, XMLParserDelegate {
         view.addSubview(tableView)
         view.addSubview(searchBar)
     }
-    func getCurrentDateTime(){
-        let formatter = DateFormatter()
-        formatter.dateStyle = .long
-        formatter.timeStyle = .medium
-        formatter.dateFormat = "yyyyMMdd"
-        let yesterdayStr = Calendar.current.date(byAdding: .day, value: -1, to: Date())
-        let yesterday = formatter.string(from: yesterdayStr!)
-        UserDefaults.standard.set(yesterday, forKey: "yesterday")
-    }
+    
     func callRequest(text: String){
         let group = DispatchGroup()
         group.enter()
@@ -84,15 +80,14 @@ class ViewController: BaseViewController, XMLParserDelegate {
                     self.movie[0] = movie.results
                     DispatchQueue.global().async {
                         ResponseAPI.shared.responseAPI(api: .movieNum(query: "\(self.movie[0][0].id)", language: "ko-KR"),headerStr: .movie, model: Image.Movie.self) { data, error in
-                                if error != nil {
-                                    print("3에러남")
-                                    group.leave()
-                                    return
-                                } else {
-                                    guard let num = data else {return}
-                                    self.movie[2] = num.results
-                                }
+                            if error != nil {
+                                print("3에러남")
                                 group.leave()
+                                return
+                            } else {
+                                guard let num = data else {return}
+                                self.movie[2] = num.results
+                            }
                         }
                     }
                 }
@@ -109,7 +104,6 @@ class ViewController: BaseViewController, XMLParserDelegate {
                 } else {
                     guard let tv = data else {return}
                     self.movie[1] = tv.results
-                    group.enter()
                     DispatchQueue.global().async {
                         ResponseAPI.shared.responseAPI(api: .tvNum(query: "\(self.movie[1][0].id)", language: "ko-KR"),headerStr: .movie, model: Image.Movie.self) { data, error in
                             if error != nil {
@@ -120,11 +114,10 @@ class ViewController: BaseViewController, XMLParserDelegate {
                                 guard let num = data else {return}
                                 self.movie[3] = num.results
                             }
-                            group.leave()
                         }
                     }
                 }
-                //group.leave()
+                group.leave()
             }
         }
         group.enter()
@@ -146,10 +139,85 @@ class ViewController: BaseViewController, XMLParserDelegate {
             self.tableView.reloadData()
         }
     }
+    func callRequestSearch(text: String){
+        let group = DispatchGroup()
+        group.enter()
+        DispatchQueue.global().async{
+            ResponseAPI.shared.responseAPI(api: .movieSearch(key: API.APIKey.TMDBKey2, query: text), headerStr: .num, model: Image.Movie.self) { data, error in if error != nil {
+                    print("search 1에러남")
+                    print("\(self.movie)========== 1번에러")
+                    group.leave()
+                    return
+                } else {
+                    guard let movie = data else { return }
+                    self.movie[0] = movie.results
+                    DispatchQueue.global().async{
+                        ResponseAPI.shared.responseAPI(api: .movieNum(query: "\(self.movie[0][0].id)", language: "ko-KR"), headerStr: .num, model: Image.Movie.self) { data, error in
+                            if error != nil {
+                                print("search 3에러남")
+                                group.leave()
+                                return
+                            } else {
+                                guard let num = data else {return}
+                                self.movie[2] = num.results
+                            }
+                            group.leave()
+                        }
+                    }
+                }
+                
+            }
+        }
+        group.enter()
+        DispatchQueue.global().async{
+            ResponseAPI.shared.responseAPI(api: .tvSearch(key: API.APIKey.TMDBKey2, query: text),headerStr: .num, model: Image.Movie.self) { data, error in
+                if error != nil {
+                    print("\(self.movie)========== 2번에러")
+                    print("search 2에러남")
+                    group.leave()
+                    return
+                } else {
+                    guard let tv = data else {return}
+                    self.movie[1] = tv.results
+                    DispatchQueue.global().async{
+                        ResponseAPI.shared.responseAPI(api: .tvNum(query: "\(self.movie[1][0].id)", language: "ko-KR"),headerStr: .num, model: Image.Movie.self) { data, error in
+                            if error != nil {
+                                print("search 3에러남")
+                                group.leave()
+                                return
+                            } else {
+                                guard let num = data else {return}
+                                self.movie[3] = num.results
+                            }
+                            group.leave()
+                        }
+                    }
+                }
+            }
+        }
+        group.enter()
+        DispatchQueue.global().async{
+            ResponseAPI.shared.responseAPI(api: .bookImage(query: text),headerStr: .book, model: Image.Book.self) { data, error in
+                if error != nil {
+                    print("5에러남")
+                    print(self.kakao)
+                    group.leave()
+                    return
+                } else {
+                    guard let book = data else {return}
+                    self.kakao[0] = book.documents
+                }
+                group.leave()
+            }
+        }
+        group.notify(queue: .main) {
+            self.tableView.reloadData()
+        }
+    }
 }
 
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
-        
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return kakao.count + movie.count
     }
@@ -210,6 +278,9 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
         }
         return cell
     }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        navigationController?.pushViewController(DetailViewController(), animated: true)
+    }
 }
 
 extension ViewController: UISearchBarDelegate {
@@ -217,8 +288,7 @@ extension ViewController: UISearchBarDelegate {
         guard let text = searchBar.text else {
             return searchBar.placeholder = "1글자 이상 입력해주세요." }
         if text.count >= 1 {
-            callRequest(text: searchBar.text ?? "")
-            
+            callRequestSearch(text: searchBar.text ?? "")
         }
     }
 }

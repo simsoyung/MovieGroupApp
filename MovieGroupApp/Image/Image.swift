@@ -17,6 +17,8 @@ enum Image {
     struct Result: Decodable {
         let poster_path: String?
         let id: Int
+        let overview: String
+        let backdrop_path: String
         var posterImage: String {
             return poster_path == nil ? "https://picsum.photos/id/237/200/300": "\(poster_path!)"
         }
@@ -30,26 +32,6 @@ enum Image {
         var thumbnailImage: String {
             return thumbnail == nil ? "https://picsum.photos/id/237/200/300": "\(thumbnail!)"
         }
-    }
-    
-    struct Music: Decodable {
-        let response: Response
-    }
-    struct Response: Decodable {
-        let body: Body
-    }
-    struct Body: Decodable {
-        let items: Items
-    }
-    struct Items: Decodable {
-        let item: [Item]
-    }
-    struct Item: Decodable {
-        let title: String
-        let period: String
-        let contactPoint: String
-        let url: String
-        let description: String
     }
 }
 

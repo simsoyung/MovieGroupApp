@@ -26,6 +26,7 @@
 		46BD5EA12C2ABD1C00BF58C4 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46BD5EA02C2ABD1B00BF58C4 /* Response.swift */; };
 		46BD5EA72C2C1E4500BF58C4 /* ImageRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46BD5EA62C2C1E4500BF58C4 /* ImageRequest.swift */; };
 		46BD5EAE2C2DA8A400BF58C4 /* XMLCoder in Frameworks */ = {isa = PBXBuildFile; productRef = 46BD5EAD2C2DA8A400BF58C4 /* XMLCoder */; };
+		46BD5EB02C2E72FE00BF58C4 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46BD5EAF2C2E72FE00BF58C4 /* DetailViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +47,7 @@
 		46BD5E9E2C2AB56300BF58C4 /* MovieCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCollectionViewCell.swift; sourceTree = "<group>"; };
 		46BD5EA02C2ABD1B00BF58C4 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
 		46BD5EA62C2C1E4500BF58C4 /* ImageRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageRequest.swift; sourceTree = "<group>"; };
+		46BD5EAF2C2E72FE00BF58C4 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +104,7 @@
 				46BD5E742C2AAB6B00BF58C4 /* ViewController.swift */,
 				46BD5E9C2C2AB4D400BF58C4 /* MovieTableViewCell.swift */,
 				46BD5E9E2C2AB56300BF58C4 /* MovieCollectionViewCell.swift */,
+				46BD5EAF2C2E72FE00BF58C4 /* DetailViewController.swift */,
 			);
 			path = Movie;
 			sourceTree = "<group>";
@@ -209,6 +212,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				46BD5EB02C2E72FE00BF58C4 /* DetailViewController.swift in Sources */,
 				46BD5E752C2AAB6B00BF58C4 /* ViewController.swift in Sources */,
 				46BD5EA72C2C1E4500BF58C4 /* ImageRequest.swift in Sources */,
 				46BD5E922C2AB25300BF58C4 /* BaseCollectionViewCell.swift in Sources */,
