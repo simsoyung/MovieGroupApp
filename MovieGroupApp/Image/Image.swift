@@ -18,9 +18,12 @@ enum Image {
         let poster_path: String?
         let id: Int
         let overview: String
-        let backdrop_path: String
+        let backdrop_path: String?
         var posterImage: String {
             return poster_path == nil ? "https://picsum.photos/id/237/200/300": "\(poster_path!)"
+        }
+        var backdropImage: String {
+            return backdrop_path == nil ? "https://picsum.photos/id/237/200/300": "\(backdrop_path!)"
         }
     }
     

@@ -65,6 +65,8 @@ enum HeaderAPI {
     case movie
     case book
     case num
+    case recommendations
+    
     var headerKey: HTTPHeaders {
         switch self {
         case .movie:
@@ -73,6 +75,8 @@ enum HeaderAPI {
             return ["Authorization": "\(API.APIKey.kakaoBookKey)"]
         case .num:
             return ["": ""]
+        case .recommendations:
+            return ["api_key": "\(API.APIKey.TMDBKey2)"]
         }
     }
 }

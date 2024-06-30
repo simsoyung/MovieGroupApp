@@ -11,7 +11,7 @@ import Alamofire
 
 class ViewController: BaseViewController, XMLParserDelegate {
     
-    var nameList = ["추천도서", "추천영화", "추천드라마","비슷한 영화", "비슷한 드라마"]
+    var nameList = ["추천도서", "추천영화", "추천드라마", "비슷한 영화", "비슷한 드라마"]
     let searchBar = UISearchBar()
     var movie: [[Image.Result]] = [
         [Image.Result(poster_path: "", id: 0, overview: "", backdrop_path: "")],
@@ -143,7 +143,7 @@ class ViewController: BaseViewController, XMLParserDelegate {
         let group = DispatchGroup()
         group.enter()
         DispatchQueue.global().async{
-            ResponseAPI.shared.responseAPI(api: .movieSearch(key: API.APIKey.TMDBKey2, query: text), headerStr: .num, model: Image.Movie.self) { data, error in if error != nil {
+            ResponseAPI.shared.responseAPI(api: .movieSearch(key: API.APIKey.TMDBKey2, query: text), headerStr: .recommendations, model: Image.Movie.self) { data, error in if error != nil {
                     print("search 1에러남")
                     print("\(self.movie)========== 1번에러")
                     group.leave()
@@ -152,7 +152,7 @@ class ViewController: BaseViewController, XMLParserDelegate {
                     guard let movie = data else { return }
                     self.movie[0] = movie.results
                     DispatchQueue.global().async{
-                        ResponseAPI.shared.responseAPI(api: .movieNum(query: "\(self.movie[0][0].id)", language: "ko-KR"), headerStr: .num, model: Image.Movie.self) { data, error in
+                        ResponseAPI.shared.responseAPI(api: .movieNum(query: "\(self.movie[0][0].id)", language: "ko-KR"), headerStr: .movie, model: Image.Movie.self) { data, error in
                             if error != nil {
                                 print("search 3에러남")
                                 group.leave()
@@ -170,9 +170,9 @@ class ViewController: BaseViewController, XMLParserDelegate {
         }
         group.enter()
         DispatchQueue.global().async{
-            ResponseAPI.shared.responseAPI(api: .tvSearch(key: API.APIKey.TMDBKey2, query: text),headerStr: .num, model: Image.Movie.self) { data, error in
+            ResponseAPI.shared.responseAPI(api: .tvSearch(key: API.APIKey.TMDBKey2, query: text),headerStr: .recommendations, model: Image.Movie.self) { data, error in
                 if error != nil {
-                    print("\(self.movie)========== 2번에러")
+                    print("\(self.movie[1])========== 2번에러")
                     print("search 2에러남")
                     group.leave()
                     return
@@ -180,7 +180,7 @@ class ViewController: BaseViewController, XMLParserDelegate {
                     guard let tv = data else {return}
                     self.movie[1] = tv.results
                     DispatchQueue.global().async{
-                        ResponseAPI.shared.responseAPI(api: .tvNum(query: "\(self.movie[1][0].id)", language: "ko-KR"),headerStr: .num, model: Image.Movie.self) { data, error in
+                        ResponseAPI.shared.responseAPI(api: .tvNum(query: "\(self.movie[1][0].id)", language: "ko-KR"),headerStr: .movie, model: Image.Movie.self) { data, error in
                             if error != nil {
                                 print("search 3에러남")
                                 group.leave()
@@ -250,6 +250,7 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieCollectionViewCell.id, for: indexPath) as! MovieCollectionViewCell
+        
         if collectionView.tag == 0 {
             let data = kakao[collectionView.tag]
             let ImageBook = "\(data[indexPath.item].thumbnailImage)"
@@ -279,6 +280,7 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
         navigationController?.pushViewController(DetailViewController(), animated: true)
     }
 }
