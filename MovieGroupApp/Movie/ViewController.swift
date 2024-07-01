@@ -9,17 +9,17 @@ import UIKit
 import SnapKit
 import Alamofire
 
-class ViewController: BaseViewController, XMLParserDelegate {
+class ViewController: BaseViewController {
     
     var nameList = ["추천도서", "추천영화", "추천드라마", "비슷한 영화", "비슷한 드라마"]
     let searchBar = UISearchBar()
     var movie: [[Image.Result]] = [
-        [Image.Result(poster_path: "", id: 0, overview: "", backdrop_path: "")],
-        [Image.Result(poster_path: "", id: 0, overview: "", backdrop_path: "")],
-        [Image.Result(poster_path: "", id: 0, overview: "", backdrop_path: "")],
-        [Image.Result(poster_path: "", id: 0, overview: "", backdrop_path: "")],
+        [Image.Result(poster_path: "", id: 0, name: "", overview: "", title: "", backdrop_path: "")],
+        [Image.Result(poster_path: "", id: 0, name: "", overview: "", title: "", backdrop_path: "")],
+        [Image.Result(poster_path: "", id: 0, name: "", overview: "", title: "", backdrop_path: "")],
+        [Image.Result(poster_path: "", id: 0, name: "", overview: "", title: "", backdrop_path: "")],
     ]
-    var kakao: [[Image.Document]] = [[Image.Document(thumbnail: "")]]
+    var kakao: [[Image.Document]] = [[Image.Document(thumbnail: "", contents: "")]]
     
     lazy var tableView = {
         let view = UITableView(frame: .zero, style: .grouped)
@@ -125,7 +125,6 @@ class ViewController: BaseViewController, XMLParserDelegate {
             ResponseAPI.shared.responseAPI(api: .bookImage(query: text),headerStr: .book, model: Image.Book.self) { data, error in
                 if error != nil {
                     print("5에러남")
-                    print(self.kakao)
                     group.leave()
                     return
                 } else {
@@ -145,7 +144,7 @@ class ViewController: BaseViewController, XMLParserDelegate {
         DispatchQueue.global().async{
             ResponseAPI.shared.responseAPI(api: .movieSearch(key: API.APIKey.TMDBKey2, query: text), headerStr: .recommendations, model: Image.Movie.self) { data, error in if error != nil {
                     print("search 1에러남")
-                    print("\(self.movie)========== 1번에러")
+                    print("========== 1번에러")
                     group.leave()
                     return
                 } else {
@@ -172,7 +171,7 @@ class ViewController: BaseViewController, XMLParserDelegate {
         DispatchQueue.global().async{
             ResponseAPI.shared.responseAPI(api: .tvSearch(key: API.APIKey.TMDBKey2, query: text),headerStr: .recommendations, model: Image.Movie.self) { data, error in
                 if error != nil {
-                    print("\(self.movie[1])========== 2번에러")
+                    print("========== 2번에러")
                     print("search 2에러남")
                     group.leave()
                     return
@@ -200,7 +199,6 @@ class ViewController: BaseViewController, XMLParserDelegate {
             ResponseAPI.shared.responseAPI(api: .bookImage(query: text),headerStr: .book, model: Image.Book.self) { data, error in
                 if error != nil {
                     print("5에러남")
-                    print(self.kakao)
                     group.leave()
                     return
                 } else {
@@ -258,30 +256,41 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
             cell.imageView.kf.setImage(with: url)
         } else if collectionView.tag == 1 {
             let data = movie[0]
-            let urlImage = "https://image.tmdb.org/t/p/w500\(data[indexPath.item].posterImage)"
+            let urlImage = "\(data[indexPath.item].posterImage)"
             let url = URL(string: urlImage)
             cell.imageView.kf.setImage(with: url)
         } else if collectionView.tag == 2 {
             let data = movie[1]
-            let urlImage = "https://image.tmdb.org/t/p/w500\(data[indexPath.item].posterImage)"
+            let urlImage = "\(data[indexPath.item].posterImage)"
             let url = URL(string: urlImage)
             cell.imageView.kf.setImage(with: url)
         } else if collectionView.tag == 3 {
             let data = movie[2]
-            let urlImage = "https://image.tmdb.org/t/p/w500\(data[indexPath.item].posterImage)"
+            let urlImage = "\(data[indexPath.item].posterImage)"
             let url = URL(string: urlImage)
             cell.imageView.kf.setImage(with: url)
         } else {
             let data = movie[3]
-            let urlImage = "https://image.tmdb.org/t/p/w500\(data[indexPath.item].posterImage)"
+            let urlImage = "\(data[indexPath.item].posterImage)"
             let url = URL(string: urlImage)
             cell.imageView.kf.setImage(with: url)
         }
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        navigationController?.pushViewController(DetailViewController(), animated: true)
+        let vc = DetailViewController()
+        if collectionView.tag == 0 {
+            vc.bookList = kakao[0][indexPath.item]
+        } else if collectionView.tag == 1 {
+            vc.TMDBList = movie[0][indexPath.item]
+        } else if collectionView.tag == 2 {
+            vc.TMDBList = movie[1][indexPath.item]
+        } else if collectionView.tag == 3 {
+            vc.TMDBList = movie[2][indexPath.item]
+        } else {
+            vc.TMDBList = movie[3][indexPath.item]
+        }
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 

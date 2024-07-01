@@ -19,7 +19,6 @@ class MovieCollectionViewCell: UICollectionViewCell {
         imageView.snp.makeConstraints { make in
             make.edges.equalTo(contentView)
         }
-        imageView.backgroundColor = .brown
         imageView.layer.cornerRadius = 20
         imageView.clipsToBounds = true
         imageView.layer.borderColor = UIColor.white.cgColor

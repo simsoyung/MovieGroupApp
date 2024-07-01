@@ -27,6 +27,7 @@
 		46BD5EA72C2C1E4500BF58C4 /* ImageRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46BD5EA62C2C1E4500BF58C4 /* ImageRequest.swift */; };
 		46BD5EAE2C2DA8A400BF58C4 /* XMLCoder in Frameworks */ = {isa = PBXBuildFile; productRef = 46BD5EAD2C2DA8A400BF58C4 /* XMLCoder */; };
 		46BD5EB02C2E72FE00BF58C4 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46BD5EAF2C2E72FE00BF58C4 /* DetailViewController.swift */; };
+		46F8F94E2C32FBFF008C892E /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F8F94D2C32FBFF008C892E /* Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,7 @@
 		46BD5EA02C2ABD1B00BF58C4 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
 		46BD5EA62C2C1E4500BF58C4 /* ImageRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageRequest.swift; sourceTree = "<group>"; };
 		46BD5EAF2C2E72FE00BF58C4 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		46F8F94D2C32FBFF008C892E /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +87,7 @@
 		46BD5E6F2C2AAB6B00BF58C4 /* MovieGroupApp */ = {
 			isa = PBXGroup;
 			children = (
+				46F8F94D2C32FBFF008C892E /* Extension.swift */,
 				46BD5E8E2C2AB21C00BF58C4 /* Base */,
 				46BD5E852C2AAC1E00BF58C4 /* Image */,
 				46BD5E842C2AAC0A00BF58C4 /* Movie */,
@@ -221,6 +224,7 @@
 				46BD5E892C2AAC7400BF58C4 /* API.swift in Sources */,
 				46BD5E732C2AAB6B00BF58C4 /* SceneDelegate.swift in Sources */,
 				46BD5E902C2AB24300BF58C4 /* BaseTableViewCell.swift in Sources */,
+				46F8F94E2C32FBFF008C892E /* Extension.swift in Sources */,
 				46BD5EA12C2ABD1C00BF58C4 /* Response.swift in Sources */,
 				46BD5E9F2C2AB56300BF58C4 /* MovieCollectionViewCell.swift in Sources */,
 				46BD5E8B2C2AACC300BF58C4 /* Image.swift in Sources */,
